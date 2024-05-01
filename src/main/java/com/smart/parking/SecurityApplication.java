@@ -27,7 +27,7 @@ public class SecurityApplication {
             var admin = RegisterRequest.builder()
                     .firstname("Admin")
                     .lastname("Admin")
-                    .email("admin@mail.com")
+                    .phoneNumber("admin@mail.com")
                     .password("password")
                     .role(ADMIN)
                     .build();
@@ -36,7 +36,7 @@ public class SecurityApplication {
             var manager = RegisterRequest.builder()
                     .firstname("Admin")
                     .lastname("Admin")
-                    .email("manager@mail.com")
+                    .phoneNumber("manager@mail.com")
                     .password("password")
                     .role(MANAGER)
                     .build();

@@ -1,10 +1,6 @@
 package com.smart.parking.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,13 +19,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Book {
+@Table(name = "car")
+public class Car {
 
     @Id
     @GeneratedValue
     private Integer id;
-    private String author;
-    private String isbn;
+    @Column(nullable = false, name = "car_name")
+    private String carName;
+    @Column(name = "number_plate", nullable = false, unique = true)
+    private String numberPlate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    public User user;
 
     @CreatedDate
     @Column(

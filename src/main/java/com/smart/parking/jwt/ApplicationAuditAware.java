@@ -1,4 +1,4 @@
-package com.smart.parking.auditing;
+package com.smart.parking.jwt;
 
 import com.smart.parking.entity.User;
 import org.springframework.data.domain.AuditorAware;

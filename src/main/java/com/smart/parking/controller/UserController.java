@@ -1,13 +1,13 @@
 package com.smart.parking.controller;
 
 import com.smart.parking.dto.ChangePasswordRequest;
-import com.smart.parking.service.UserService;
+import com.smart.parking.dto.UserRequest;
+import com.smart.parking.entity.User;
+import com.smart.parking.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -17,6 +17,11 @@ import java.security.Principal;
 public class UserController {
 
     private final UserService service;
+
+    @GetMapping("/me")
+    public UserRequest getCurrentUser(@AuthenticationPrincipal User user) {
+        return service.user(user);
+    }
 
     @PatchMapping
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request, Principal connectedUser) {

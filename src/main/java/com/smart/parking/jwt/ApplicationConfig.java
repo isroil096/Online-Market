@@ -1,6 +1,5 @@
 package com.smart.parking.jwt;
 
-import com.smart.parking.auditing.ApplicationAuditAware;
 import com.smart.parking.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +22,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findByEmail(username)
+        return username -> repository.findByPhoneNumber(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 

@@ -1,6 +1,7 @@
-package com.smart.parking.service;
+package com.smart.parking.service.user;
 
 import com.smart.parking.dto.ChangePasswordRequest;
+import com.smart.parking.dto.UserRequest;
 import com.smart.parking.entity.User;
 import com.smart.parking.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import java.security.Principal;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository repository;
@@ -35,5 +36,15 @@ public class UserService {
 
         // save the new password
         repository.save(user);
+    }
+
+    public UserRequest user(User user) {
+        return UserRequest.builder()
+                .id(user.getId())
+                .phoneNumber(user.getPhoneNumber())
+                .firstname(user.getFirstname())
+                .lastname(user.getLastname())
+                .role(user.getRole())
+                .build();
     }
 }

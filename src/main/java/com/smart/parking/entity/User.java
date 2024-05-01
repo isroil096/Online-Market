@@ -24,7 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -32,11 +32,17 @@ public class User implements UserDetails {
     private Integer id;
     private String firstname;
     private String lastname;
-    private String email;
+    private String phoneNumber;
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+//    @OneToMany(mappedBy = "user")
+//    private List<Car> cars;
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<ParkingPlace> parkingPlaces;
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
@@ -53,7 +59,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return phoneNumber;
     }
 
     @Override

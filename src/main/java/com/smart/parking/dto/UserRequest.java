@@ -1,17 +1,16 @@
-package com.smart.parking.auth;
+package com.smart.parking.dto;
 
 import com.smart.parking.entity.constants.Role;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class RegisterRequest {
+public class UserRequest {
 
+    private Integer id;
     private String firstname;
     private String lastname;
     private String phoneNumber;

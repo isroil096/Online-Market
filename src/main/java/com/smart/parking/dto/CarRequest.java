@@ -7,9 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class BookRequest {
+public class CarRequest {
 
     private Integer id;
-    private String author;
-    private String isbn;
+    private String carName;
+    private String numberPlate;
 }
