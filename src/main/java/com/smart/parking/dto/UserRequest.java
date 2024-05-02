@@ -10,7 +10,7 @@ import lombok.Setter;
 @Builder
 public class UserRequest {
 
-    private Integer id;
+    private Long id;
     private String firstname;
     private String lastname;
     private String phoneNumber;

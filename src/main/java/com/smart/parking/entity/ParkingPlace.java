@@ -1,10 +1,7 @@
 package com.smart.parking.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -12,18 +9,22 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "parking_place")
 public class ParkingPlace {
 
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false, name = "parking_name")
     private String parkingName;
@@ -31,6 +32,9 @@ public class ParkingPlace {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User user;
+
+    @ManyToMany(mappedBy = "parkingPlaces", cascade = CascadeType.ALL)
+    private Set<Car> parkedCars = new HashSet<>();
 
     @CreatedDate
     @Column(
@@ -49,9 +53,9 @@ public class ParkingPlace {
             nullable = false,
             updatable = false
     )
-    private Integer createdBy;
+    private Long createdBy;
 
     @LastModifiedBy
     @Column(insertable = false)
-    private Integer lastModifiedBy;
+    private Long lastModifiedBy;
 }
