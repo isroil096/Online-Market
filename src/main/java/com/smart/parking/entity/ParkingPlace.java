@@ -29,6 +29,9 @@ public class ParkingPlace {
     @Column(nullable = false, name = "parking_name")
     private String parkingName;
 
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = Boolean.FALSE;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User user;

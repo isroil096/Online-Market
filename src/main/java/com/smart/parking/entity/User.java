@@ -1,13 +1,7 @@
 package com.smart.parking.entity;
 
 import com.smart.parking.entity.constants.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,10 +21,21 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column(name = "first_name")
     private String firstname;
+
+    @Column(name = "last_name")
     private String lastname;
+
+    @Column(name = "phone_number", unique = true)
     private String phoneNumber;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = Boolean.FALSE;
 
     @Enumerated(EnumType.STRING)
     private Role role;

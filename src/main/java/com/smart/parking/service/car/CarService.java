@@ -12,10 +12,14 @@ public interface CarService {
 
     CarRequest findByNumberPlate(String numberPlate);
 
-    void update(Long user_id, CarRequest request);
+    void update(User user, CarRequest request);
 
     List<Car> findAll();
 
     void saveCar(CarRequest carRequest, User user);
+
+    void delete(String numberPlate);
+
+    List<CarRequest> userCars(Long userId);
 
 }

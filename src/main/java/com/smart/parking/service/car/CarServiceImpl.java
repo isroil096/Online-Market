@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -25,6 +22,8 @@ public class CarServiceImpl implements CarService {
     private final CarRepository repository;
     private final ParkingPlaceRepository parkingPlaceRepository;
 
+
+    // TODO need to be deleted
     @Override
     public void save(CarRequest request, User user) {
         var car = Car.builder()
@@ -38,7 +37,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarRequest findByNumberPlate(String numberPlate) {
-        Optional<Car> car = repository.findByLicense(numberPlate);
+        Optional<Car> car = repository.findByLicense(numberPlate, false);
         if (car.isPresent()) {
             return CarRequest.builder()
                     .id(car.get().getId())
@@ -51,21 +50,37 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void update(Long user_id, CarRequest request) {
-        Optional<Car> car = repository.findByUserId(user_id);
-        if (car.isPresent()) {
-            Car carEntity = car.get();
-            carEntity.setCarName(request.getCarName());
-            carEntity.setNumberPlate(request.getNumberPlate());
-            repository.save(carEntity);
-        } else {
-            throw new NotFoundException("Car not found");
+    public void update(User user, CarRequest request) {
+        List<Car> car = repository.findByUserId(user.getId(), false);
+        for (Car car1 : car) {
+            if (car1.getNumberPlate().equals(request.getNumberPlate())) {
+                car1.setCarName(request.getCarName());
+                car1.setNumberPlate(request.getNumberPlate());
+                repository.save(car1);
+            }
+            throw new NotFoundException("CAR NOT FOUND");
         }
     }
 
     @Override
+    public List<CarRequest> userCars(Long userId) {
+        List<Car> cars = repository.findByUserId(userId, false);
+        List<CarRequest> carRequests = new ArrayList<>();
+        for (Car car : cars) {
+            CarRequest build = CarRequest.builder()
+                    .id(car.getId())
+                    .carName(car.getCarName())
+                    .numberPlate(car.getNumberPlate())
+                    .build();
+            carRequests.add(build);
+        }
+
+        return carRequests;
+    }
+
+    @Override
     public List<Car> findAll() {
-        return repository.findAll();
+        return repository.findAll(Boolean.FALSE);
     }
 
     @Override
@@ -77,17 +92,29 @@ public class CarServiceImpl implements CarService {
 
         Set<ParkingPlace> parkingPlaces = new HashSet<>();
         Set<Car> cars = new HashSet<>();
-        ParkingPlace parkingPlace = new ParkingPlace();
-        for(ParkingRequest parkingEntity: carRequest.getParking()) {
+        for (ParkingRequest parkingEntity : carRequest.getParking()) {
+            ParkingPlace parkingPlace = new ParkingPlace();
             parkingPlace.setParkingName(parkingEntity.getParkingName());
             parkingPlace.setUser(user);
-            cars.add(car);
             parkingPlace.setParkedCars(cars);
+
+            cars.add(car);
             parkingPlaces.add(parkingPlace);
             parkingPlaceRepository.save(parkingPlace);
         }
 
         car.setParkingPlaces(parkingPlaces);
         repository.save(car);
+    }
+
+    @Override
+    public void delete(String numberPlate) {
+        Optional<Car> car = repository.findByLicense(numberPlate, false);
+        if (car.isPresent()) {
+            car.get().setIsDeleted(true);
+            repository.save(car.get());
+        } else {
+            throw new NotFoundException("Car not found");
+        }
     }
 }

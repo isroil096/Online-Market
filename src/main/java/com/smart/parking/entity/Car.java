@@ -32,9 +32,13 @@ public class Car {
     @Column(name = "number_plate", nullable = false, unique = true)
     private String numberPlate;
 
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = Boolean.FALSE;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    public User user;
+    private User user;
+
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

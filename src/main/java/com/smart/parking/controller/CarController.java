@@ -23,26 +23,38 @@ public class CarController {
         return service.findByNumberPlate(numberPlate);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Car>> findAllCars() {
         return ResponseEntity.ok(service.findAll());
     }
 
+    @GetMapping("/user/cars/{user_id}")
+    public List<CarRequest> userCars(@PathVariable("user_id") Long userId){
+        return service.userCars(userId);
+    }
+
+    //TODO need to be deleted
     @PostMapping("/without/parking")
     public ResponseEntity<?> save(@RequestBody CarRequest request, @AuthenticationPrincipal User user) {
         service.save(request, user);
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/update/{user_id}")
-    public ResponseEntity<?> update(@PathVariable("user_id") Long userId, @RequestBody CarRequest request) {
-        service.update(userId, request);
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestBody CarRequest request, @AuthenticationPrincipal User user) {
+        service.update(user, request);
         return ResponseEntity.accepted().build();
     }
 
     @PostMapping("/with/parking")
     public ResponseEntity<?> saveCar(@RequestBody CarRequest carRequest, @AuthenticationPrincipal User user) {
         service.saveCar(carRequest, user);
+        return ResponseEntity.accepted().build();
+    }
+
+    @DeleteMapping("/{numberPlate}")
+    public ResponseEntity<?> delete(@PathVariable String numberPlate) {
+        service.delete(numberPlate);
         return ResponseEntity.accepted().build();
     }
 }
