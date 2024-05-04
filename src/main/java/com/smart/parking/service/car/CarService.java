@@ -19,7 +19,7 @@ public interface CarService {
 
     void saveCar(CarPostRequest carRequest, User user);
 
-    void delete(String numberPlate);
+    void delete(Long carId);
 
     List<CarGetRequest> userCars(Long userId);
 

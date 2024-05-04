@@ -53,9 +53,9 @@ public class CarController {
         return ResponseEntity.accepted().build();
     }
 
-    @DeleteMapping("/{numberPlate}")
-    public ResponseEntity<?> delete(@PathVariable String numberPlate) {
-        service.delete(numberPlate);
+    @DeleteMapping("/{carId}")
+    public ResponseEntity<?> delete(@PathVariable Long carId) {
+        service.delete(carId);
         return ResponseEntity.accepted().build();
     }
 }

@@ -67,11 +67,17 @@ public class CarServiceImpl implements CarService {
     public List<CarGetRequest> userCars(Long userId) {
         List<Car> cars = repository.findByUserId(userId, false);
         List<CarGetRequest> carRequests = new ArrayList<>();
+
         for (Car car : cars) {
+            Set<ParkingRequest> parkingRequests = new HashSet<>();
+            for (ParkingPlace parkingPlace : car.getParkingPlaces()) {
+                parkingRequests.add(new ParkingRequest(parkingPlace.getParkingName()));
+            }
             CarGetRequest build = CarGetRequest.builder()
                     .id(car.getId())
                     .carName(car.getCarName())
                     .numberPlate(car.getNumberPlate())
+                    .parking(parkingRequests)
                     .build();
             carRequests.add(build);
         }
@@ -108,8 +114,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void delete(String numberPlate) {
-        Optional<Car> car = repository.findByLicense(numberPlate, false);
+    public void delete(Long carId) {
+        Optional<Car> car = repository.findCarById(carId, false);
         if (car.isPresent()) {
             car.get().setIsDeleted(true);
             repository.save(car.get());
