@@ -18,4 +18,7 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM car WHERE is_deleted =:is_deleted")
     List<Car> findAll(@Param("is_deleted") Boolean isDeleted);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM car WHERE id =:id AND is_deleted =:is_deleted")
+    Optional<Car> findCarById(@Param("id") Long id, @Param("is_deleted") Boolean isDeleted);
 }

@@ -1,6 +1,7 @@
 package com.smart.parking.service.car;
 
-import com.smart.parking.dto.CarRequest;
+import com.smart.parking.dto.car.CarGetRequest;
+import com.smart.parking.dto.car.CarPostRequest;
 import com.smart.parking.entity.Car;
 import com.smart.parking.entity.User;
 
@@ -8,18 +9,18 @@ import java.util.List;
 
 public interface CarService {
 
-    void save(CarRequest request, User user);
+    void save(CarGetRequest request, User user);
 
-    CarRequest findByNumberPlate(String numberPlate);
+    CarGetRequest findByNumberPlate(String numberPlate);
 
-    void update(User user, CarRequest request);
+    void update(Long carId, CarPostRequest request);
 
     List<Car> findAll();
 
-    void saveCar(CarRequest carRequest, User user);
+    void saveCar(CarPostRequest carRequest, User user);
 
     void delete(String numberPlate);
 
-    List<CarRequest> userCars(Long userId);
+    List<CarGetRequest> userCars(Long userId);
 
 }

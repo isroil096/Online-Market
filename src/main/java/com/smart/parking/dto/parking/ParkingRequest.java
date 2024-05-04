@@ -1,4 +1,4 @@
-package com.smart.parking.dto;
+package com.smart.parking.dto.parking;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,7 +1,8 @@
 package com.smart.parking.service.car;
 
-import com.smart.parking.dto.CarRequest;
-import com.smart.parking.dto.ParkingRequest;
+import com.smart.parking.dto.car.CarGetRequest;
+import com.smart.parking.dto.car.CarPostRequest;
+import com.smart.parking.dto.parking.ParkingRequest;
 import com.smart.parking.entity.Car;
 import com.smart.parking.entity.ParkingPlace;
 import com.smart.parking.entity.User;
@@ -25,7 +26,7 @@ public class CarServiceImpl implements CarService {
 
     // TODO need to be deleted
     @Override
-    public void save(CarRequest request, User user) {
+    public void save(CarGetRequest request, User user) {
         var car = Car.builder()
                 .id(request.getId())
                 .carName(request.getCarName())
@@ -36,10 +37,10 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarRequest findByNumberPlate(String numberPlate) {
+    public CarGetRequest findByNumberPlate(String numberPlate) {
         Optional<Car> car = repository.findByLicense(numberPlate, false);
         if (car.isPresent()) {
-            return CarRequest.builder()
+            return CarGetRequest.builder()
                     .id(car.get().getId())
                     .carName(car.get().getCarName())
                     .numberPlate(car.get().getNumberPlate())
@@ -50,31 +51,30 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void update(User user, CarRequest request) {
-        List<Car> car = repository.findByUserId(user.getId(), false);
-        for (Car car1 : car) {
-            if (car1.getNumberPlate().equals(request.getNumberPlate())) {
-                car1.setCarName(request.getCarName());
-                car1.setNumberPlate(request.getNumberPlate());
-                repository.save(car1);
-            }
+    public void update(Long carId, CarPostRequest request) {
+        Optional<Car> carEntity = repository.findCarById(carId, false);
+        if (carEntity.isPresent()) {
+            Car car = carEntity.get();
+            car.setCarName(request.getCarName());
+            car.setNumberPlate(request.getNumberPlate());
+            repository.save(car);
+        } else {
             throw new NotFoundException("CAR NOT FOUND");
         }
     }
 
     @Override
-    public List<CarRequest> userCars(Long userId) {
+    public List<CarGetRequest> userCars(Long userId) {
         List<Car> cars = repository.findByUserId(userId, false);
-        List<CarRequest> carRequests = new ArrayList<>();
+        List<CarGetRequest> carRequests = new ArrayList<>();
         for (Car car : cars) {
-            CarRequest build = CarRequest.builder()
+            CarGetRequest build = CarGetRequest.builder()
                     .id(car.getId())
                     .carName(car.getCarName())
                     .numberPlate(car.getNumberPlate())
                     .build();
             carRequests.add(build);
         }
-
         return carRequests;
     }
 
@@ -84,7 +84,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void saveCar(CarRequest carRequest, User user) {
+    public void saveCar(CarPostRequest carRequest, User user) {
         Car car = new Car();
         car.setCarName(carRequest.getCarName());
         car.setNumberPlate(carRequest.getNumberPlate());

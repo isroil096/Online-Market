@@ -1,6 +1,7 @@
 package com.smart.parking.controller;
 
-import com.smart.parking.dto.CarRequest;
+import com.smart.parking.dto.car.CarGetRequest;
+import com.smart.parking.dto.car.CarPostRequest;
 import com.smart.parking.entity.Car;
 import com.smart.parking.entity.User;
 import com.smart.parking.service.car.CarService;
@@ -19,7 +20,7 @@ public class CarController {
     private final CarService service;
 
     @GetMapping("/findBy/{numberPlate}")
-    public CarRequest getByNumberPlate(@PathVariable String numberPlate) {
+    public CarGetRequest getByNumberPlate(@PathVariable String numberPlate) {
         return service.findByNumberPlate(numberPlate);
     }
 
@@ -29,25 +30,25 @@ public class CarController {
     }
 
     @GetMapping("/user/cars/{user_id}")
-    public List<CarRequest> userCars(@PathVariable("user_id") Long userId){
+    public List<CarGetRequest> userCars(@PathVariable("user_id") Long userId){
         return service.userCars(userId);
     }
 
     //TODO need to be deleted
-    @PostMapping("/without/parking")
-    public ResponseEntity<?> save(@RequestBody CarRequest request, @AuthenticationPrincipal User user) {
-        service.save(request, user);
-        return ResponseEntity.accepted().build();
-    }
+//    @PostMapping("/without/parking")
+//    public ResponseEntity<?> save(@RequestBody CarRequest request, @AuthenticationPrincipal User user) {
+//        service.save(request, user);
+//        return ResponseEntity.accepted().build();
+//    }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody CarRequest request, @AuthenticationPrincipal User user) {
-        service.update(user, request);
+    @PutMapping("/update/{car_id}")
+    public ResponseEntity<?> update(@PathVariable("car_id") Long id, @RequestBody CarPostRequest request) {
+        service.update(id, request);
         return ResponseEntity.accepted().build();
     }
 
     @PostMapping("/with/parking")
-    public ResponseEntity<?> saveCar(@RequestBody CarRequest carRequest, @AuthenticationPrincipal User user) {
+    public ResponseEntity<?> saveCar(@RequestBody CarPostRequest carRequest, @AuthenticationPrincipal User user) {
         service.saveCar(carRequest, user);
         return ResponseEntity.accepted().build();
     }
