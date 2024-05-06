@@ -46,7 +46,7 @@ public class Car {
             joinColumns = @JoinColumn(name = "car_id"),
             inverseJoinColumns = @JoinColumn(name = "parking_id")
     )
-    private Set<ParkingPlace> parkingPlaces = new HashSet<>();
+    private Set<Parking> parkingPlaces = new HashSet<>();
 
     @CreatedDate
     @Column(

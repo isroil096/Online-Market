@@ -4,11 +4,11 @@ import com.smart.parking.dto.car.CarGetRequest;
 import com.smart.parking.dto.car.CarPostRequest;
 import com.smart.parking.dto.parking.ParkingRequest;
 import com.smart.parking.entity.Car;
-import com.smart.parking.entity.ParkingPlace;
+import com.smart.parking.entity.Parking;
 import com.smart.parking.entity.User;
 import com.smart.parking.exception.NotFoundException;
 import com.smart.parking.repository.CarRepository;
-import com.smart.parking.repository.ParkingPlaceRepository;
+import com.smart.parking.repository.ParkingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ import java.util.*;
 public class CarServiceImpl implements CarService {
 
     private final CarRepository repository;
-    private final ParkingPlaceRepository parkingPlaceRepository;
+    private final ParkingRepository parkingPlaceRepository;
 
 
     // TODO need to be deleted
@@ -70,7 +70,7 @@ public class CarServiceImpl implements CarService {
 
         for (Car car : cars) {
             Set<ParkingRequest> parkingRequests = new HashSet<>();
-            for (ParkingPlace parkingPlace : car.getParkingPlaces()) {
+            for (Parking parkingPlace : car.getParkingPlaces()) {
                 parkingRequests.add(new ParkingRequest(parkingPlace.getParkingName()));
             }
             CarGetRequest build = CarGetRequest.builder()
@@ -91,18 +91,22 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void saveCar(CarPostRequest carRequest, User user) {
-        Car car = new Car();
-        car.setCarName(carRequest.getCarName());
-        car.setNumberPlate(carRequest.getNumberPlate());
-        car.setUser(user);
+        Car car = Car.builder()
+                .carName(carRequest.getCarName())
+                .numberPlate(carRequest.getNumberPlate())
+                .user(user)
+                .isDeleted(false)
+                .build();
 
-        Set<ParkingPlace> parkingPlaces = new HashSet<>();
+        Set<Parking> parkingPlaces = new HashSet<>();
         Set<Car> cars = new HashSet<>();
         for (ParkingRequest parkingEntity : carRequest.getParking()) {
-            ParkingPlace parkingPlace = new ParkingPlace();
-            parkingPlace.setParkingName(parkingEntity.getParkingName());
-            parkingPlace.setUser(user);
-            parkingPlace.setParkedCars(cars);
+            Parking parkingPlace = Parking.builder()
+                    .parkingName(parkingEntity.getParkingName())
+                    .user(user)
+                    .parkedCars(cars)
+                    .isDeleted(false)
+                    .build();
 
             cars.add(car);
             parkingPlaces.add(parkingPlace);

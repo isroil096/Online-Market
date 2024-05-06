@@ -20,7 +20,7 @@ import java.util.Set;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "parking_place")
-public class ParkingPlace {
+public class Parking {
 
     @Id
     @GeneratedValue
