@@ -11,4 +11,10 @@ public interface ParkingService {
     void save(ParkingPostRequest request, User user);
 
     List<ParkingGetRequest> getParkingById(Long userId);
+
+    ParkingGetRequest getByParkingId(Long parkingId);
+
+    void deleteParkingById(Long parkingId);
+
+    void update(Long parkingId, ParkingPostRequest parkingPostRequest);
 }

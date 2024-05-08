@@ -1,7 +1,5 @@
 package com.smart.parking.service.parking;
 
-import com.smart.parking.dto.car.CarGetRequest;
-import com.smart.parking.dto.car.CarParkingGetRequest;
 import com.smart.parking.dto.car.CarParkingPostRequest;
 import com.smart.parking.dto.parking.ParkingCarGetRequest;
 import com.smart.parking.dto.parking.ParkingGetRequest;
@@ -49,6 +47,7 @@ public class ParkingServiceImpl implements ParkingService {
         }
     }
 
+    @Override
     public List<ParkingGetRequest> getParkingById(Long userId) {
         List<Parking> parkingList = parkingRepository.findParkingByUserId(userId, false);
         List<ParkingGetRequest> parkingGetRequests = new ArrayList<>();
@@ -72,6 +71,7 @@ public class ParkingServiceImpl implements ParkingService {
         return parkingGetRequests;
     }
 
+    @Override
     public ParkingGetRequest getByParkingId(Long parkingId) {
         Optional<Parking> parkingEntity = parkingRepository.findByParkingId(parkingId, false);
         if (parkingEntity.isPresent()) {
@@ -94,6 +94,7 @@ public class ParkingServiceImpl implements ParkingService {
         }
     }
 
+    @Override
     public void deleteParkingById(Long parkingId) {
         Optional<Parking> parkingEntity = parkingRepository.findByParkingId(parkingId, false);
         if (parkingEntity.isPresent()) {
@@ -105,11 +106,24 @@ public class ParkingServiceImpl implements ParkingService {
         }
     }
 
-    public void update(Long parkingId) {
+    @Override
+    public void update(Long parkingId, ParkingPostRequest parkingPostRequest) {
         Optional<Parking> parkingEntity = parkingRepository.findByParkingId(parkingId, false);
         if (parkingEntity.isPresent()) {
             Parking parking = parkingEntity.get();
-
+            parking.setParkingName(parkingPostRequest.getParkingName());
+            Set<Car> cars = new HashSet<>();
+            for (CarParkingPostRequest car : parkingPostRequest.getCars()) {
+                Car carEntity = Car.builder()
+                        .carName(car.getCarName())
+                        .numberPlate(car.getNumberPlate())
+                        .build();
+                cars.add(carEntity);
+            }
+            parking.setParkedCars(cars);
+            parkingRepository.save(parking);
+        } else {
+            throw new NotFoundException("PARKING WITH ID NOT FOUND");
         }
     }
 }

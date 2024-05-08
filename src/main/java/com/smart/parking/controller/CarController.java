@@ -29,7 +29,7 @@ public class CarController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/user/cars/{user_id}")
+    @GetMapping("/all/{user_id}")
     public List<CarGetRequest> userCars(@PathVariable("user_id") Long userId){
         return service.userCars(userId);
     }
