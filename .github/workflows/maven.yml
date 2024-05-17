@@ -65,7 +65,7 @@ jobs:
       - name: Generate the package
         run: mvn -B package --file pom.xml -Dmaven.test.skip=true
       - name: Deploy the package to the remote server
-        uses: Arab04/parking-app@release
+        uses: Arab04/parking-app@v1
         with:
           local: target/workflow-github-actions-1.0-SNAPSHOT.jar
           remote: smart-parking/demo/actions/workflow-github-actions.jar # My remote directory
