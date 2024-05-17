@@ -65,21 +65,21 @@ jobs:
       - name: Generate the package
         run: mvn -B package --file pom.xml -Dmaven.test.skip=true
       - name: Deploy the package to the remote server
-        uses: garygrossgarten/github-action-scp@release
+        uses: Arab04/parking-app@release
         with:
           local: target/workflow-github-actions-1.0-SNAPSHOT.jar
           remote: smart-parking/demo/actions/workflow-github-actions.jar # My remote directory
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.SSH_USER}}
-          password: ${{ secrets.SSH_PASSWORD}}
+          host: ${{secrets.HOST}}
+          username: ${{secrets.SSH_USER}}
+          password: ${{secrets.SSH_PASSWORD}}
       - name: Run a script on remote server (start the application)
         if: always()
         uses: fifsky/ssh-action@master
         with:
           command: |
             cd smart-parking/demo/actions/ && java -jar workflow-github-actions.jar &
-          host: ${{ secrets.HOST }}
-          user: ${{ secrets.SSH_USER }}
-          pass: ${{ secrets.SSH_PASSWORD }}
+          host: ${{secrets.HOST}}
+          user: ${{secrets.SSH_USER}}
+          pass: ${{secrets.SSH_PASSWORD}}
           args: "-tt"
           # The & in the command runs the process on background
