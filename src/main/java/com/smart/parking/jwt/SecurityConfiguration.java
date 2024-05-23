@@ -13,20 +13,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import static com.smart.parking.entity.constants.Permission.ADMIN_CREATE;
-import static com.smart.parking.entity.constants.Permission.ADMIN_DELETE;
-import static com.smart.parking.entity.constants.Permission.ADMIN_READ;
-import static com.smart.parking.entity.constants.Permission.ADMIN_UPDATE;
-import static com.smart.parking.entity.constants.Permission.MANAGER_CREATE;
-import static com.smart.parking.entity.constants.Permission.MANAGER_DELETE;
-import static com.smart.parking.entity.constants.Permission.MANAGER_READ;
-import static com.smart.parking.entity.constants.Permission.MANAGER_UPDATE;
+import static com.smart.parking.entity.constants.Permission.*;
 import static com.smart.parking.entity.constants.Role.ADMIN;
 import static com.smart.parking.entity.constants.Role.MANAGER;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
