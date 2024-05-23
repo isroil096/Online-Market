@@ -60,11 +60,11 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getPhoneNumber(),
                         request.getPassword()
                 )
         );
-        var user = repository.findByPhoneNumber(request.getEmail())
+        var user = repository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
