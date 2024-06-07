@@ -20,4 +20,7 @@ public interface ParkingRepository extends JpaRepository<Parking, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM parking_place WHERE id =:id AND is_deleted =:is_deleted")
     Optional<Parking> findByParkingId(@Param("id") Long id, @Param("is_deleted") Boolean isDeleted);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM parking_place WHERE id =:id AND user_id =:user_id AND is_deleted =:is_deleted")
+    Optional<Parking> findParkingByIdAndUserId(@Param("id") Long id, @Param("user_id") Long userId, @Param("is_deleted") Boolean isDeleted);
 }

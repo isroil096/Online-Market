@@ -30,8 +30,13 @@ public class CarController {
     }
 
     @GetMapping("/all/{user_id}")
-    public List<CarGetRequest> userCars(@PathVariable("user_id") Long userId){
+    public List<CarGetRequest> userCars(@PathVariable("user_id") Long userId) {
         return service.userCars(userId);
+    }
+
+    @GetMapping("/findBy/{carId}")
+    public CarGetRequest getByCarId(@PathVariable("carId") Long carId) {
+        return service.findCarById(carId);
     }
 
     //TODO need to be deleted

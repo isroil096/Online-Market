@@ -23,4 +23,6 @@ public interface CarService {
 
     List<CarGetRequest> userCars(Long userId);
 
+    CarGetRequest findCarById(Long carId);
+
 }

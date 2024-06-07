@@ -1,5 +1,7 @@
 package com.smart.parking.auth;
 
+import com.smart.parking.exception.NotFoundException;
+import com.smart.parking.exception.UserAlreadyExists;
 import com.smart.parking.jwt.JwtService;
 import com.smart.parking.entity.Token;
 import com.smart.parking.repository.TokenRepository;
@@ -11,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +41,7 @@ public class AuthenticationService {
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(request.getRole())
                     .isDeleted(false)
+                    .isNonLocked(true)
                     .build();
             var savedUser = repository.save(user);
             var jwtToken = jwtService.generateToken(user);
@@ -48,24 +52,19 @@ public class AuthenticationService {
                     .refreshToken(refreshToken)
                     .build();
         } else {
-            var jwtToken = jwtService.generateToken(byPhoneNumber.get());
-            var refreshToken = jwtService.generateRefreshToken(byPhoneNumber.get());
-            return AuthenticationResponse.builder()
-                    .accessToken(jwtToken)
-                    .refreshToken(refreshToken)
-                    .build();
+            throw new UserAlreadyExists("USER WITH SUCH NUMBER ALREADY EXISTS");
         }
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        var user = repository.findByPhoneNumber(request.getPhoneNumber())
+                .orElseThrow(() -> new NotFoundException("USER NOT FOUND WITH SUCH NUMBER"));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getPhoneNumber(),
                         request.getPassword()
                 )
         );
-        var user = repository.findByPhoneNumber(request.getPhoneNumber())
-                .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
