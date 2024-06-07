@@ -1,5 +1,6 @@
 package com.smart.parking.controller;
 
+import com.smart.parking.dto.parking.ParkingBarrierControl;
 import com.smart.parking.dto.parking.ParkingGetRequest;
 import com.smart.parking.dto.parking.ParkingPostRequest;
 import com.smart.parking.entity.User;
@@ -45,5 +46,10 @@ public class ParkingController {
     public ResponseEntity<?> update(@PathVariable Long parkingId, @RequestBody ParkingPostRequest parkingPostRequest) {
         parkingService.update(parkingId, parkingPostRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{userId}/{parkingId}")
+    public ParkingBarrierControl barrierController(@PathVariable Long userId, @PathVariable Long parkingId, @RequestBody ParkingBarrierControl parkingBarrierControl) {
+        return parkingService.barrierController(parkingId, userId, parkingBarrierControl);
     }
 }

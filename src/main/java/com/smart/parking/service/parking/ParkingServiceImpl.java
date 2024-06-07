@@ -1,6 +1,7 @@
 package com.smart.parking.service.parking;
 
 import com.smart.parking.dto.car.CarParkingPostRequest;
+import com.smart.parking.dto.parking.ParkingBarrierControl;
 import com.smart.parking.dto.parking.ParkingCarGetRequest;
 import com.smart.parking.dto.parking.ParkingGetRequest;
 import com.smart.parking.dto.parking.ParkingPostRequest;
@@ -11,6 +12,7 @@ import com.smart.parking.exception.NotFoundException;
 import com.smart.parking.repository.CarRepository;
 import com.smart.parking.repository.ParkingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -124,6 +126,17 @@ public class ParkingServiceImpl implements ParkingService {
             parkingRepository.save(parking);
         } else {
             throw new NotFoundException("PARKING WITH ID NOT FOUND");
+        }
+    }
+
+    @Override
+    public ParkingBarrierControl barrierController(Long parkingId, Long userId, ParkingBarrierControl parkingBarrierControl) {
+        Optional<Parking> parkingBarrier = parkingRepository.findParkingByIdAndUserId(parkingId, userId, false);
+        if (parkingBarrier.isPresent()) {
+            //TODO you have to give command to barrier according to user request
+            return parkingBarrierControl;
+        } else {
+            throw new NotFoundException("PARKING WITH THESE CREDENTIALS NOT FOUND");
         }
     }
 }

@@ -10,6 +10,7 @@ import com.smart.parking.exception.NotFoundException;
 import com.smart.parking.repository.CarRepository;
 import com.smart.parking.repository.ParkingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +47,7 @@ public class CarServiceImpl implements CarService {
                     .numberPlate(car.get().getNumberPlate())
                     .build();
         } else {
-            throw new NotFoundException("Car not found");
+            throw new NotFoundException("CAR NOT FOUND");
         }
     }
 
@@ -82,6 +83,20 @@ public class CarServiceImpl implements CarService {
             carRequests.add(build);
         }
         return carRequests;
+    }
+
+    @Override
+    public CarGetRequest findCarById(Long carId) {
+        Optional<Car> car = repository.findCarById(carId, false);
+        if (car.isPresent()) {
+            return CarGetRequest.builder()
+                    .id(car.get().getId())
+                    .carName(car.get().getCarName())
+                    .numberPlate(car.get().getNumberPlate())
+                    .build();
+        } else {
+            throw new NotFoundException("CAR NOT FOUND WITH ID: " + carId);
+        }
     }
 
     @Override
@@ -124,7 +139,7 @@ public class CarServiceImpl implements CarService {
             car.get().setIsDeleted(true);
             repository.save(car.get());
         } else {
-            throw new NotFoundException("Car not found");
+            throw new NotFoundException("CAR NOT FOUND");
         }
     }
 }

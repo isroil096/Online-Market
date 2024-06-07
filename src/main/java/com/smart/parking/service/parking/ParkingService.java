@@ -1,5 +1,6 @@
 package com.smart.parking.service.parking;
 
+import com.smart.parking.dto.parking.ParkingBarrierControl;
 import com.smart.parking.dto.parking.ParkingGetRequest;
 import com.smart.parking.dto.parking.ParkingPostRequest;
 import com.smart.parking.entity.User;
@@ -17,4 +18,6 @@ public interface ParkingService {
     void deleteParkingById(Long parkingId);
 
     void update(Long parkingId, ParkingPostRequest parkingPostRequest);
+
+    ParkingBarrierControl barrierController(Long parkingId, Long userId, ParkingBarrierControl parkingBarrierControl);
 }
