@@ -1,4 +1,4 @@
-package com.smart.parking.dto.user;
+package com.smart.parking.dto;
 
 import lombok.Builder;
 import lombok.Getter;

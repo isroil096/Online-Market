@@ -1,7 +1,6 @@
 package com.smart.parking.auth;
 
-import com.smart.parking.exception.NotFoundException;
-import com.smart.parking.exception.UserAlreadyExists;
+import com.smart.parking.exception.BadRequest;
 import com.smart.parking.jwt.JwtService;
 import com.smart.parking.entity.Token;
 import com.smart.parking.repository.TokenRepository;
@@ -11,9 +10,9 @@ import com.smart.parking.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,13 +51,13 @@ public class AuthenticationService {
                     .refreshToken(refreshToken)
                     .build();
         } else {
-            throw new UserAlreadyExists("USER WITH SUCH NUMBER ALREADY EXISTS");
+            throw new BadRequest("User not found");
         }
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = repository.findByPhoneNumber(request.getPhoneNumber())
-                .orElseThrow(() -> new NotFoundException("USER NOT FOUND WITH SUCH NUMBER"));
+                .orElseThrow(() -> new BadRequest("USER NOT FOUND WITH SUCH NUMBER"));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getPhoneNumber(),

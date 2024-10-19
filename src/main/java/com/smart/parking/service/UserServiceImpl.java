@@ -1,15 +1,22 @@
-package com.smart.parking.service.user;
+package com.smart.parking.service;
 
-import com.smart.parking.dto.user.ChangePasswordRequest;
-import com.smart.parking.dto.user.UserRequest;
+import com.smart.parking.dto.ChangePasswordRequest;
+import com.smart.parking.dto.UserRequest;
+import com.smart.parking.dto.UserRequestDto;
 import com.smart.parking.entity.User;
+import com.smart.parking.exception.BadRequest;
+import com.smart.parking.repository.CardRepository;
+import com.smart.parking.repository.TokenRepository;
 import com.smart.parking.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository repository;
+    private final TokenRepository tokenRepository;
+    private final CardRepository cardRepository;
 
     public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
 
@@ -47,4 +56,34 @@ public class UserServiceImpl implements UserService {
                 .role(user.getRole())
                 .build();
     }
+
+    @Override
+    public List<User> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public void updateUser(Long id, UserRequestDto userRequest) {
+        User user = repository.findById(id).get();
+        user.setFirstname(userRequest.getFirstname());
+        user.setLastname(userRequest.getLastname());
+        user.setPhoneNumber(userRequest.getPhoneNumber());
+        user.setRole(userRequest.getRole());
+        repository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long id) {
+        Optional<User> byId = repository.findById(id);
+        if (byId.isEmpty()) {
+            throw new BadRequest("User not found");
+        } else {
+            cardRepository.deleteByUserId(id);
+            tokenRepository.deleteByUserId(id);
+            repository.delete(byId.get());
+        }
+    }
+
+    
 }

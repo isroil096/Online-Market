@@ -1,5 +1,6 @@
 package com.smart.parking.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.smart.parking.entity.constants.Role;
 import jakarta.persistence.*;
 
@@ -41,12 +42,10 @@ public class User implements UserDetails {
     private Role role;
 
 //    @OneToMany(mappedBy = "user")
-//    private List<Car> cars;
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<ParkingPlace> parkingPlaces;
+//    private List<Card> card;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Token> tokens;
 
     private Boolean isNonLocked = Boolean.TRUE;

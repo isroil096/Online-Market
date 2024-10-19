@@ -7,11 +7,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class MainException {
+@AllArgsConstructor
+public class FrontedRequest {
 
-    private String exception;
-    private Integer code;
     private String message;
+    private String code;
+    private String title;
+    boolean success;
 }

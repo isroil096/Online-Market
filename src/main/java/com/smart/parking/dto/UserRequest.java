@@ -1,4 +1,4 @@
-package com.smart.parking.dto.user;
+package com.smart.parking.dto;
 
 import com.smart.parking.entity.constants.Role;
 import lombok.Builder;
