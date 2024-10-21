@@ -1,8 +1,8 @@
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/jwt
-    username: jwt_refresh
+    url: jdbc:postgresql://localhost:5432/online_market
+    username: online_db
     password: root
     driver-class-name: org.postgresql.Driver
 
@@ -10,7 +10,7 @@ spring:
     show-sql: true
     open-in-view: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 
 
 

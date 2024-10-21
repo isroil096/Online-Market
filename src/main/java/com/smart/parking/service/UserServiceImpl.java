@@ -5,7 +5,7 @@ import com.smart.parking.dto.UserRequest;
 import com.smart.parking.dto.UserRequestDto;
 import com.smart.parking.entity.User;
 import com.smart.parking.exception.BadRequest;
-import com.smart.parking.repository.CardRepository;
+import com.smart.parking.repository.CarRepository;
 import com.smart.parking.repository.TokenRepository;
 import com.smart.parking.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository repository;
     private final TokenRepository tokenRepository;
-    private final CardRepository cardRepository;
+    private final CarRepository carRepository;
 
     public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
 
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         if (byId.isEmpty()) {
             throw new BadRequest("User not found");
         } else {
-            cardRepository.deleteByUserId(id);
+            carRepository.deleteByUserId(id);
             tokenRepository.deleteByUserId(id);
             repository.delete(byId.get());
         }

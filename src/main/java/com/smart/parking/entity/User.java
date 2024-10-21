@@ -41,11 +41,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Card> card;
+   //@OneToMany(mappedBy = "user")
+   //@JsonManagedReference
+    //private List<Car> card;
 
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Token> tokens;
 
     private Boolean isNonLocked = Boolean.TRUE;

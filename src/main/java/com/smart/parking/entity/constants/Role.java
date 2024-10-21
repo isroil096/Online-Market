@@ -19,18 +19,18 @@ public enum Role {
                     Permission.ADMIN_UPDATE,
                     Permission.ADMIN_DELETE,
                     Permission.ADMIN_CREATE,
-                    Permission.MANAGER_READ,
-                    Permission.MANAGER_UPDATE,
-                    Permission.MANAGER_DELETE,
-                    Permission.MANAGER_CREATE
+                    Permission.CLIENT_READ,
+                    Permission.CLIENT_UPDATE,
+                    Permission.CLIENT_DELETE,
+                    Permission.CLIENT_CREATE
             )
     ),
-    MANAGER(
+    CLIENT(
             Set.of(
-                    Permission.MANAGER_READ,
-                    Permission.MANAGER_UPDATE,
-                    Permission.MANAGER_DELETE,
-                    Permission.MANAGER_CREATE
+                    Permission.CLIENT_READ,
+                    Permission.CLIENT_UPDATE,
+                    Permission.CLIENT_DELETE,
+                    Permission.CLIENT_CREATE
             )
     );
 
