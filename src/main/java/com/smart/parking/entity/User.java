@@ -43,7 +43,7 @@ public class User implements UserDetails {
 
    //@OneToMany(mappedBy = "user")
    //@JsonManagedReference
-    //private List<Car> card;
+    //private List<Car> car;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Token> tokens;

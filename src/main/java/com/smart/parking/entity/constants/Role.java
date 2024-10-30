@@ -25,6 +25,7 @@ public enum Role {
                     Permission.CLIENT_CREATE
             )
     ),
+    SELLER(Collections.emptySet()),
     CLIENT(
             Set.of(
                     Permission.CLIENT_READ,

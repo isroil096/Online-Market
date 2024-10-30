@@ -1,11 +1,8 @@
 package com.smart.parking.controller;
 
-import com.smart.parking.dto.CarRequestDto;
-import com.smart.parking.entity.Car;
-import com.smart.parking.repository.CarRepository;
-import com.smart.parking.repository.UserRepository;
-import com.smart.parking.service.CarService;
-import com.smart.parking.service.UserService;
+import com.smart.parking.dto.SellerRequestDto;
+import com.smart.parking.entity.Seller;
+import com.smart.parking.service.SellerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,23 +14,23 @@ import java.util.List;
 @RequestMapping("/admin/car")
 public class AdminController {
 
-    private final CarService carService;
+    private final SellerService sellerService;
 
 
     @PutMapping("/upd/{id}")
-    public ResponseEntity<CarRequestDto> updateCard(@PathVariable Long id , @RequestBody CarRequestDto carRequest) {
-        carService.updateCard(id, carRequest);
+    public ResponseEntity<SellerRequestDto> updateCard(@PathVariable Long id , @RequestBody SellerRequestDto carRequest) {
+        sellerService.updateCar(id, carRequest);
         return ResponseEntity.ok(carRequest);
     }
 
     @DeleteMapping("/del/{id}")
     public void deleteCard(@PathVariable Long id) {
-        carService.deleteCard(id);
+        sellerService.deleteCar(id);
     }
 
     @GetMapping("/get/all")
-    public List<Car> getAllCards() {
-        return carService.findAll();
+    public List<Seller> getAllCards() {
+        return sellerService.findAll();
     }
 
 }

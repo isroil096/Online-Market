@@ -1,9 +1,10 @@
 package com.smart.parking.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.smart.parking.entity.constants.CarCity;
+import com.smart.parking.entity.constants.CarColor;
+import com.smart.parking.entity.constants.CarName;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
 
 @Getter
 @Setter
@@ -12,7 +13,7 @@ import org.hibernate.annotations.Fetch;
 @AllArgsConstructor
 @Entity
 @Table(name = "car")
-public class Car {
+public class Seller {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +21,9 @@ public class Car {
     private String phone;
     private Long price;
     private String model;
-    private String name;
-    private String color;
+    private CarName name;
+    private CarColor color;
+    private CarCity city;
     private String type;
     private Long year;
 

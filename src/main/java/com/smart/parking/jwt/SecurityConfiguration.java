@@ -14,8 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static com.smart.parking.entity.constants.Permission.*;
-import static com.smart.parking.entity.constants.Role.ADMIN;
-import static com.smart.parking.entity.constants.Role.CLIENT;
+import static com.smart.parking.entity.constants.Role.*;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -48,6 +47,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
+                                .requestMatchers("/api/seller/**").hasAnyRole(SELLER.name(), USER.name())
+                                .requestMatchers("/api/client/**").hasAnyRole(CLIENT.name(), USER.name())
                                 .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), CLIENT.name())
                                 .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(ADMIN_READ.name(), CLIENT_READ.name())
                                 .requestMatchers(POST, "/api/v1/management/**").hasAnyAuthority(ADMIN_CREATE.name(), CLIENT_CREATE.name())
